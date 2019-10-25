@@ -1,0 +1,1675 @@
+input AccessReservationInput {
+  reservationId: ID!
+  clientMutationId: String
+}
+
+type AccessReservationPayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  reservationAction: ReservationActionNode
+  clientMutationId: String
+}
+
+input ApproveMembershipInput {
+  membershipId: ID!
+  clientMutationId: String
+}
+
+type ApproveMembershipPayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  membership: MembershipNode
+  clientMutationId: String
+}
+
+type Availability {
+  availableDuringRequestedTimespan: Boolean!
+  start: DateTime!
+  end: DateTime
+}
+
+input AvailabilityInput {
+  """
+  Start of availability check timespan.
+  """
+  start: DateTime!
+
+  """
+  End of availability check timespan. Skip field if only the timespan’s start is needed.
+  """
+  end: DateTime
+
+  """
+  Filter queryset by availability during requested timespan. Skip field if no filter shall be applied!
+  """
+  availableDuringRequestedTimespan: Boolean
+}
+
+type CityConnection {
+  """
+  Pagination data for this connection.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Contains the nodes in this connection.
+  """
+  edges: [CityEdge]!
+}
+
+"""
+A Relay edge containing a `City` and its cursor.
+"""
+type CityEdge {
+  """
+  The item at the end of the edge
+  """
+  node: CityNode
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+type CityNode implements Node {
+  """
+  The ID of the object.
+  """
+  id: ID!
+  name: String!
+  zip: String
+}
+
+"""
+Reservation data that is completed after reservation
+was CLOSED.
+- Driven distance, real start & end, fees.
+"""
+type ClosingDataNode {
+  """
+  Driven distance.
+  """
+  distance: Decimal
+}
+
+input CreateMembershipInput {
+  membership: MembershipCreateInput!
+  clientMutationId: String
+}
+
+type CreateMembershipPayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  membership: MembershipNode
+  clientMutationId: String
+}
+
+input CreateReservationInput {
+  reservation: ReservationCreateInput!
+  clientMutationId: String
+}
+
+type CreateReservationPayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  reservation: ReservationNode
+  clientMutationId: String
+}
+
+input CreateUserInput {
+  user: UserCreateInput!
+  clientMutationId: String
+}
+
+type CreateUserPayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  user: UserNode
+  clientMutationId: String
+}
+
+"""
+User data of the logged in user.
+"""
+type CurrentUserNode implements Node {
+  """
+  The ID of the object.
+  """
+  id: ID!
+  zip: String
+  city: String
+
+  """
+  Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern und @/./+/-/_.
+  """
+  username: String!
+  firstName: String!
+  lastName: String!
+  externalUserId: String
+  title: String
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+  address: String
+  fullname: String
+  avatar: URL
+
+  """
+  Zones of all vehicles the user has access to.
+  """
+  zones: MultipleZonesNode
+}
+
+interface DataItem {
+  dateTime: DateTime
+
+  """
+  Generic recommendation by ZEMTU, but your mileage may vary.
+  """
+  displayRecommendation: Boolean
+}
+
+type DataStoreNode implements Node {
+  user: OwnerNode!
+  jsonData: JSONString
+
+  """
+  The ID of the object.
+  """
+  id: ID!
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+}
+
+input DataStoreUpdateInput {
+  id: ID!
+  jsonData: JSONString!
+}
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+"""
+The `Decimal` scalar type represents a python Decimal.
+"""
+scalar Decimal
+
+input DeleteInput {
+  id: ID!
+}
+
+input DeleteReservationInput {
+  reservation: DeleteInput!
+  clientMutationId: String
+}
+
+type DeleteReservationPayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  reservation: ReservationNode
+  clientMutationId: String
+}
+
+type DemoAccountNode {
+  enabled: Boolean!
+  username: String
+  password: String
+}
+
+type Distance {
+  unit: DistanceUnitEnum!
+  value: Float!
+}
+
+"""
+An enumeration.
+"""
+enum DistanceUnitEnum {
+  chain
+  chain_benoit
+  chain_sears
+  british_chain_benoit
+  british_chain_sears
+  british_chain_sears_truncated
+  cm
+  british_ft
+  british_yd
+  clarke_ft
+  clarke_link
+  fathom
+  ft
+  german_m
+  gold_coast_ft
+  indian_yd
+  inch
+  km
+  link
+  link_benoit
+  link_sears
+  m
+  mi
+  mm
+  nm
+  nm_uk
+  rod
+  sears_yd
+  survey_ft
+  um
+  yd
+}
+
+type ElectricVehicleData implements DataItem {
+  dateTime: DateTime
+
+  """
+  Generic recommendation by ZEMTU, but your mileage may vary.
+  """
+  displayRecommendation: Boolean
+  stateOfCharge: StateOfCharge
+  charging: Boolean
+  pluggedIn: Boolean
+}
+
+"""
+Email address.
+
+https://tools.ietf.org/html/rfc5322#section-3.4.1
+"""
+scalar EmailAddress
+
+type EnvironmentNode {
+  siteConfig: SiteConfigNode
+  currentUser: CurrentUserNode
+}
+
+type ErrorType {
+  field: String!
+  messages: [String!]!
+}
+
+type ExecutedActionsStatusNode {
+  accessReservation: ReservationActionNode
+  unlockVehicle: ReservationActionNode
+  lockVehicle: ReservationActionNode
+  finishReservation: ReservationActionNode
+}
+
+input FinishReservationInput {
+  reservationId: ID!
+  clientMutationId: String
+}
+
+type FinishReservationPayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  reservationAction: ReservationActionNode
+  clientMutationId: String
+}
+
+type FloatingPosition implements DataItem {
+  dateTime: DateTime
+
+  """
+  Generic recommendation by ZEMTU, but your mileage may vary.
+  """
+  displayRecommendation: Boolean
+  point: GeoPoint
+  address: String
+}
+
+"""
+The `GenericScalar` scalar type represents a generic
+GraphQL scalar value that could be:
+String, Boolean, Int, Float, List or Object.
+"""
+scalar GenericScalar
+
+"""
+Geographical point.
+"""
+type GeoPoint {
+  latitude: Float!
+  longitude: Float!
+  altitude: Float
+}
+
+input GeoPointInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+"""
+Instant means for the current timeslot.
+"""
+type InstantAvailability {
+  """
+  Is the vehicle ready to be used instantly?
+  """
+  usableNow: Boolean!
+
+  """
+  Is the vehicle bookable in the GUI for the current time slot?
+  """
+  bookableNow: Boolean!
+
+  """
+  Is the vehicle accessible?
+  """
+  accessibleNow: Boolean
+
+  """
+  Is the vehicle parked at the defined location?
+  """
+  inHomeArea: Boolean
+}
+
+"""
+International phone number.
+"""
+scalar InternationalPhoneNumber
+
+"""
+Allows use of a JSON String for input / output from the GraphQL schema.
+
+Use of this type is *not recommended* as you lose the benefits of having a defined, static
+schema (one of the key benefits of GraphQL).
+"""
+scalar JSONString
+
+input LockVehicleInput {
+  reservationId: ID!
+  clientMutationId: String
+}
+
+type LockVehiclePayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  reservationAction: ReservationActionNode
+  clientMutationId: String
+}
+
+input MembershipCreateInput {
+  userId: ID!
+  sharingGroupId: ID!
+  note: String
+}
+
+type MembershipNode implements Node {
+  """
+  The ID of the object.
+  """
+  id: ID!
+  user: UserNode!
+  status: MembershipStatusEnum!
+  note: String
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+  sharingGroup: SharingGroupNode!
+}
+
+type MembershipNodeConnection {
+  """
+  Pagination data for this connection.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Contains the nodes in this connection.
+  """
+  edges: [MembershipNodeEdge]!
+}
+
+"""
+A Relay edge containing a `MembershipNode` and its cursor.
+"""
+type MembershipNodeEdge {
+  """
+  The item at the end of the edge
+  """
+  node: MembershipNode
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+enum MembershipStatusEnum {
+  REQUESTED
+  APPROVED
+  WITHDRAWN
+}
+
+"""
+Multiple zones returned as GeoJSON.
+"""
+type MultipleZonesNode {
+  """
+  Zones where vehicles are positioned in GeoJSON format.
+  """
+  jsonData: JSONString
+}
+
+type Mutation {
+  """
+  Obtain JSON Web Token mutation
+  """
+  tokenAuth(input: ObtainJSONWebTokenInput!): ObtainJSONWebTokenPayload
+  verifyToken(input: VerifyInput!): VerifyPayload
+  refreshToken(input: RefreshInput!): RefreshPayload
+  revokeToken(input: RevokeInput!): RevokePayload
+  createUser(input: CreateUserInput!): CreateUserPayload
+  updateDataStore(input: UpdateDataStoreInput!): UpdateDataStorePayload
+  createReservation(input: CreateReservationInput!): CreateReservationPayload
+  updateReservation(input: UpdateReservationInput!): UpdateReservationPayload
+  deleteReservation(input: DeleteReservationInput!): DeleteReservationPayload
+  accessReservation(input: AccessReservationInput!): AccessReservationPayload
+  finishReservation(input: FinishReservationInput!): FinishReservationPayload
+  unlockVehicle(input: UnlockVehicleInput!): UnlockVehiclePayload
+  lockVehicle(input: LockVehicleInput!): LockVehiclePayload
+  createMembership(input: CreateMembershipInput!): CreateMembershipPayload
+  approveMembership(input: ApproveMembershipInput!): ApproveMembershipPayload
+}
+
+type NeighboringReservationsNode {
+  """
+  Previous used reservation. This only includes protected and closed reservations.
+  """
+  previousReservation: ReservationNode
+
+  """
+  Next reservation.
+  """
+  nextReservation: ReservationNode
+
+  """
+  Reservation that prevents accessing this reservation.
+  """
+  blockingReservation: ReservationNode
+}
+
+"""
+An object with an ID
+"""
+interface Node {
+  """
+  The ID of the object.
+  """
+  id: ID!
+}
+
+input ObtainJSONWebTokenInput {
+  clientMutationId: String
+  username: String!
+  password: String!
+}
+
+"""
+Obtain JSON Web Token mutation
+"""
+type ObtainJSONWebTokenPayload {
+  token: String
+  clientMutationId: String
+  refreshToken: String
+}
+
+enum OperatingSchemeEnum {
+  STATION_BASED
+  ZONE_BASED
+}
+
+type OwnerNode implements Node {
+  """
+  The ID of the object.
+  """
+  id: ID!
+  email: String!
+  zip: String
+  city: String
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+
+  """
+  Composite user name.
+  """
+  fullName: String
+  phoneNumber: String
+  phoneNumberMobile: String
+}
+
+"""
+The Relay compliant `PageInfo` type, containing data necessary to paginate this connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
+
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
+}
+
+input PositionInput {
+  point: GeoPointInput
+}
+
+type Query {
+  """
+  The ID of the object
+  """
+  membership(id: ID!): MembershipNode
+  allMemberships(
+    """
+    Maximum page size: 100
+    """
+    first: Int
+
+    """
+    Maximum page size: 100
+    """
+    last: Int
+    before: String
+    after: String
+    id: ID
+    user: ID
+    carsharinggroup: ID
+
+    """
+    Sort options: pk, -pk, status, -status. Combine multiple options. Example: orderBy: "-FIELD_A,FIELD_B"
+    """
+    orderBy: String
+  ): MembershipNodeConnection
+
+  """
+  The ID of the object
+  """
+  sharingGroup(id: ID!): SharingGroupNode
+  allSharingGroups(
+    """
+    Maximum page size: 25
+    """
+    first: Int
+
+    """
+    Maximum page size: 25
+    """
+    last: Int
+    before: String
+    after: String
+    id: ID
+    name: String
+
+    """
+    Sort options: name, -name, pk, -pk. Combine multiple options. Example: orderBy: "-FIELD_A,FIELD_B"
+    """
+    orderBy: String
+  ): SharingGroupNodeConnection
+
+  """
+  The ID of the object
+  """
+  vehicle(id: ID!): VehicleNode
+
+  """
+  All vehicles bookable for active user.
+  """
+  allVehicles(
+    position: PositionInput
+    availability: AvailabilityInput
+
+    """
+    Maximum page size: 25
+    """
+    first: Int
+
+    """
+    Maximum page size: 25
+    """
+    last: Int
+    before: String
+    after: String
+    id: ID
+    zip: String
+    city: String
+    description: String
+
+    """
+    Sort options: availabilityEnd, -availabilityEnd, availabilityStart,
+    -availabilityStart, caption, -caption, city, -city, distanceToPosition,
+    -distanceToPosition, label, -label, pk, -pk, stateOfCharge, -stateOfCharge,
+    usableNow, -usableNow, usage, -usage, zip, -zip. Combine multiple options.
+    Example: orderBy: "-FIELD_A,FIELD_B"
+    """
+    orderBy: String
+  ): VehicleNodeConnection
+
+  """
+  The ID of the object
+  """
+  user(id: ID!): UserNode
+  allUsers(
+    """
+    Maximum page size: 100
+    """
+    first: Int
+
+    """
+    Maximum page size: 100
+    """
+    last: Int
+    before: String
+    after: String
+    id: ID
+    username: String
+    email: String
+    firstName: String
+    lastName: String
+
+    """
+    Sort options: pk, -pk, username, -username. Combine multiple options. Example: orderBy: "-FIELD_A,FIELD_B"
+    """
+    orderBy: String
+  ): UserNodeConnection
+
+  """
+  The ID of the object
+  """
+  city(id: ID!): CityNode
+
+  """
+  All cities where vehicles are available for the active user.
+  """
+  allCities(
+    before: String
+    after: String
+    first: Int
+    last: Int
+  ): CityConnection
+  dataStore: DataStoreNode
+
+  """
+  Specific environment of the queried host considering the active user.
+  """
+  environment: EnvironmentNode
+
+  """
+  The ID of the object
+  """
+  reservation(id: ID!): ReservationNode
+  allReservations(
+    state: [ReservationStateEnum]
+
+    """
+    Maximum page size: 50
+    """
+    first: Int
+
+    """
+    Maximum page size: 50
+    """
+    last: Int
+    before: String
+    after: String
+    id: ID
+    startLt: DateTime
+    startLte: DateTime
+    startGt: DateTime
+    startGte: DateTime
+    startRange: DateTime
+    endLt: DateTime
+    endLte: DateTime
+    endGt: DateTime
+    endGte: DateTime
+    isFishing: Boolean
+
+    """
+    Reservations that are accessible by the current user.
+    """
+    isAccessibleOnly: Boolean
+
+    """
+    Reservations that are owned by the current user.
+    """
+    isCurrentUserOnly: Boolean
+
+    """
+    Sort options: end, -end, pk, -pk, start, -start. Combine multiple options. Example: orderBy: "-FIELD_A,FIELD_B"
+    """
+    orderBy: String
+  ): ReservationNodeConnection
+}
+
+input RefreshInput {
+  refreshToken: String!
+  clientMutationId: String
+}
+
+type RefreshPayload {
+  token: String
+  payload: GenericScalar
+  clientMutationId: String
+  refreshToken: String
+}
+
+"""
+Data about a single action.
+"""
+type ReservationActionNode {
+  type: ReservationActionTypeEnum!
+
+  """
+  ID of the action request.
+  """
+  requestId: Int!
+
+  """
+  Date when action was created.
+  """
+  created: DateTime!
+
+  """
+  Current status of action.
+  """
+  status: ReservationActionStatusEnum!
+
+  """
+  When status is final no more action updates will flow in. Stop polling!
+  """
+  isFinalStatus: Boolean!
+
+  """
+  Current phase of action. A single status can have multiple phases.
+  """
+  phase: ReservationActionPhaseNode
+
+  """
+  Information about the state - available as soon as state is final.
+  """
+  message: String!
+
+  """
+  Hints on how to recover from an error state.
+  """
+  hint: String!
+}
+
+enum ReservationActionPhaseActivityEnum {
+  LOCK
+  UNLOCK
+  DEACTIVATE_IMMOBILIZER
+}
+
+type ReservationActionPhaseNode {
+  """
+  Status of this phase.
+  """
+  status: ReservationActionPhaseStatusEnum!
+
+  """
+  Activity happening in this phase.
+  """
+  activity: ReservationActionPhaseActivityEnum!
+
+  """
+  Human readable description of the activity in this phase.
+  """
+  description: String
+}
+
+enum ReservationActionPhaseStatusEnum {
+  VALID
+  SENT
+  RECEIVED
+}
+
+enum ReservationActionStatusEnum {
+  UNKNOWN
+  IN_PROGRESS
+  OK
+  TIMEOUT
+  ERROR
+}
+
+"""
+Status of actions executed for reservation.
+"""
+type ReservationActionStatusNode {
+  """
+  Actions that are available for this reservation.
+  """
+  availableActions: [ReservationActionTypeEnum]!
+
+  """
+  Subset of actions that are executable by the active user for the current reservation.
+  """
+  executableActions: [ReservationActionTypeEnum]!
+
+  """
+  Status of actions that have been executed for the current reservation.
+  """
+  executedActionsStatus: ExecutedActionsStatusNode!
+}
+
+enum ReservationActionTypeEnum {
+  ACCESS_RESERVATION
+  FINISH_RESERVATION
+  LOCK_VEHICLE
+  UNLOCK_VEHICLE
+}
+
+input ReservationCreateInput {
+  start: DateTime!
+  end: DateTime!
+  liftOffer: Boolean!
+  note: String
+  purpose: ReservationPurposeEnum!
+  vehicleId: ID!
+}
+
+"""
+Reservation
+"""
+type ReservationNode implements Node {
+  """
+  The ID of the object.
+  """
+  id: ID!
+  state: ReservationStateEnum!
+  addedBy: OwnerNode!
+  vehicle: VehicleNode!
+
+  """
+  Diese Bemerkung ist für diese Reservierung. Es ist keine allgemeine Information über das Fahrzeug.
+  """
+  note: String
+  purpose: ReservationPurposeEnum!
+  liftOffer: Boolean!
+  fishingPin: String
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+  start: DateTime!
+  end: DateTime!
+  isFishing: Boolean!
+
+  """
+  Information about actions that can be executed / were executed for this reservation.
+  """
+  actionStatus: ReservationActionStatusNode!
+
+  """
+  Reservations in the neighborhood of this reservation.
+  """
+  neighboringReservations: NeighboringReservationsNode!
+
+  """
+  Closing data is only available for own CLOSED reservations.
+  """
+  closingData: ClosingDataNode
+
+  """
+  Trips of this reservation. Due to privacy policies, this data will only be returned for the reservation’s owner!
+  """
+  trips(
+    """
+    Maximum page size: 10
+    """
+    first: Int
+
+    """
+    Maximum page size: 10
+    """
+    last: Int
+    before: String
+    after: String
+    id: ID
+
+    """
+    Sort options: pk, -pk. Combine multiple options. Example: orderBy: "-FIELD_A,FIELD_B"
+    """
+    orderBy: String
+  ): TripNodeConnection
+}
+
+type ReservationNodeConnection {
+  """
+  Pagination data for this connection.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Contains the nodes in this connection.
+  """
+  edges: [ReservationNodeEdge]!
+}
+
+"""
+A Relay edge containing a `ReservationNode` and its cursor.
+"""
+type ReservationNodeEdge {
+  """
+  The item at the end of the edge
+  """
+  node: ReservationNode
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+enum ReservationPurposeEnum {
+  PERSONAL
+  BUSINESS
+}
+
+enum ReservationStateEnum {
+  OPENED
+  PROTECTED
+  CLOSED
+  DELETED
+}
+
+input ReservationUpdateInput {
+  id: ID!
+  start: DateTime
+  end: DateTime
+  liftOffer: Boolean
+  note: String
+  purpose: ReservationPurposeEnum
+  vehicleId: ID
+}
+
+input RevokeInput {
+  refreshToken: String!
+  clientMutationId: String
+}
+
+type RevokePayload {
+  revoked: Int
+  clientMutationId: String
+}
+
+type SharingGroupNode implements Node {
+  name: String!
+  description: String
+
+  """
+  The ID of the object.
+  """
+  id: ID!
+  url: String
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+}
+
+type SharingGroupNodeConnection {
+  """
+  Pagination data for this connection.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Contains the nodes in this connection.
+  """
+  edges: [SharingGroupNodeEdge]!
+}
+
+"""
+A Relay edge containing a `SharingGroupNode` and its cursor.
+"""
+type SharingGroupNodeEdge {
+  """
+  The item at the end of the edge
+  """
+  node: SharingGroupNode
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+"""
+Customized branding of the current site.
+"""
+type SiteConfigNode {
+  name: String!
+
+  """
+  The organization’s support hotline.
+  """
+  supportHotline: InternationalPhoneNumber!
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+
+  """
+  URL to logo.
+  """
+  logo: URL
+  colorA: String
+
+  """
+  General terms and conditions.
+  """
+  generalTerms: URL
+
+  """
+  User manual.
+  """
+  userManual: URL
+
+  """
+  With the demo account users can try out the system.
+  """
+  demoAccount: DemoAccountNode!
+
+  """
+  Information about how new users get into the system.
+  """
+  userRegistration: UserRegistrationNode!
+
+  """
+  DEPRECATED! Predefined zone where vehicles are positioned.
+  """
+  zone: MultipleZonesNode!
+}
+
+type StateOfCharge {
+  value: Int
+
+  """
+  The different "state of charge" zones are simply ZEMTU’s recommendations.
+  """
+  zone: StateOfChargeZoneEnum
+}
+
+"""
+Custom zone classification of state of charge.
+"""
+enum StateOfChargeZoneEnum {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+"""
+Each stop over comes with the following data:
+"""
+type StopOverNode {
+  """
+  Precise date time when stop over happened.
+  """
+  dateTime: DateTime!
+
+  """
+  Odometer value for stop over.
+  """
+  odometer: Decimal
+
+  """
+  GPS position of stop over.
+  """
+  position: GeoPoint!
+
+  """
+  Reverse geocoded position.
+  """
+  address: String!
+}
+
+"""
+Trip
+"""
+type TripNode implements Node {
+  """
+  The ID of the object.
+  """
+  id: ID!
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+
+  """
+  Start of trip.
+  """
+  start: StopOverNode!
+
+  """
+  End of trip.
+  """
+  end: StopOverNode!
+}
+
+type TripNodeConnection {
+  """
+  Pagination data for this connection.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Contains the nodes in this connection.
+  """
+  edges: [TripNodeEdge]!
+}
+
+"""
+A Relay edge containing a `TripNode` and its cursor.
+"""
+type TripNodeEdge {
+  """
+  The item at the end of the edge
+  """
+  node: TripNode
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+input UnlockVehicleInput {
+  reservationId: ID!
+  clientMutationId: String
+}
+
+type UnlockVehiclePayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  reservationAction: ReservationActionNode
+  clientMutationId: String
+}
+
+input UpdateDataStoreInput {
+  dataStore: DataStoreUpdateInput!
+  clientMutationId: String
+}
+
+type UpdateDataStorePayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  dataStore: DataStoreNode!
+  clientMutationId: String
+}
+
+input UpdateReservationInput {
+  reservation: ReservationUpdateInput!
+  clientMutationId: String
+}
+
+type UpdateReservationPayload {
+  """
+  User/business-level errors. May contain more than one error for the same
+  field. Hint: The top-level query errors entry is reserved for client and
+  server-level errors.
+  """
+  userErrors: [ErrorType]
+  reservation: ReservationNode
+  clientMutationId: String
+}
+
+"""
+Uniform Resource Locator.
+https://url.spec.whatwg.org/
+"""
+scalar URL
+
+input UserCreateInput {
+  username: String!
+  email: EmailAddress!
+  password: String!
+  firstName: String!
+  lastName: String!
+  company: String
+  address: String
+  zip: String!
+  city: String!
+  tel: InternationalPhoneNumber
+  telMobile: InternationalPhoneNumber
+  externalUserId: String
+}
+
+type UserNode implements Node {
+  """
+  The ID of the object.
+  """
+  id: ID!
+  email: String!
+  zip: String
+  city: String
+
+  """
+  Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern und @/./+/-/_.
+  """
+  username: String!
+  firstName: String!
+  lastName: String!
+  externalUserId: String
+  title: String
+  url: String
+  company: String
+  tel: String
+  telMobile: String
+
+  """
+  Maximale Dateigröße: 5 MB
+  """
+  avatar: String
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+  address: String
+  fullName: String
+}
+
+type UserNodeConnection {
+  """
+  Pagination data for this connection.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Contains the nodes in this connection.
+  """
+  edges: [UserNodeEdge]!
+}
+
+"""
+A Relay edge containing a `UserNode` and its cursor.
+"""
+type UserNodeEdge {
+  """
+  The item at the end of the edge
+  """
+  node: UserNode
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+type UserRegistrationNode {
+  type: UserRegistrationTypeEnum!
+  settings: JSONString
+}
+
+enum UserRegistrationTypeEnum {
+  DISABLED
+  ZEMTU_PLATFORM
+  EXTERNAL
+}
+
+enum VehicleCapabilitiesEnum {
+  GPS
+  ONBOARD_UNIT
+  ELECTRIC_VEHICLE_DATA
+  FLOATING_POSITION
+  ACCESS_ACTIONS
+}
+
+"""
+Dynamic vehicle data.
+"""
+type VehicleData {
+  """
+  Electric vehicles with capable on-board units deliver electric vehicle data.
+  """
+  electricVehicleData: ElectricVehicleData
+
+  """
+  For vehicles operated in zone-base or free-floating sharing scheme the pickup positions change.
+  """
+  floatingPosition: FloatingPosition
+}
+
+type VehicleImageNode implements Node {
+  image: String
+
+  """
+  The ID of the object.
+  """
+  id: ID!
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+  thumbnail: URL
+}
+
+type VehicleImageNodeConnection {
+  """
+  Pagination data for this connection.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Contains the nodes in this connection.
+  """
+  edges: [VehicleImageNodeEdge]!
+}
+
+"""
+A Relay edge containing a `VehicleImageNode` and its cursor.
+"""
+type VehicleImageNodeEdge {
+  """
+  The item at the end of the edge
+  """
+  node: VehicleImageNode
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+type VehicleNode implements Node {
+  """
+  The ID of the object.
+  """
+  id: ID!
+  carsharinggroup: SharingGroupNode!
+
+  """
+  Name / Spitzname / Bezeichnung des Fahrzeugs
+  """
+  label: String!
+  brand: String!
+  model: String!
+  customText: String!
+  licensePlate: String!
+
+  """
+  Zone in der sich das Fahrzeug befindet.
+  """
+  zone: String!
+
+  """
+  For vehicles with zone-based carsharing mode, the zone describes in which
+  geographical area the vehicles can be picked up and dropped.
+  """
+  zoneObject: ZoneNode
+  zip: String!
+  city: String!
+
+  """
+  Ausführliche Informationen über dieses Fahrzeug
+  """
+  description: String!
+
+  """
+  Ausführliche Informationen über den aktuellen Zustand des Fahrzeugs
+  """
+  condition: String!
+
+  """
+  Geoposition des Fahrzeugs
+  """
+  homebase: GeoPoint!
+  defaultPurpose: ReservationPurposeEnum!
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+  address: String
+  captions: [String]
+  timezone: String!
+  reservations(
+    """
+    Maximum page size: 50
+    """
+    first: Int
+
+    """
+    Maximum page size: 50
+    """
+    last: Int
+    before: String
+    after: String
+    id: ID
+    startLt: DateTime
+    startLte: DateTime
+    startGt: DateTime
+    startGte: DateTime
+    startRange: DateTime
+    endLt: DateTime
+    endLte: DateTime
+    endGt: DateTime
+    endGte: DateTime
+    isFishing: Boolean
+
+    """
+    Reservations that are accessible by the current user.
+    """
+    isAccessibleOnly: Boolean
+
+    """
+    Reservations that are owned by the current user.
+    """
+    isCurrentUserOnly: Boolean
+
+    """
+    Sort options: end, -end, pk, -pk, start, -start. Combine multiple options. Example: orderBy: "-FIELD_A,FIELD_B"
+    """
+    orderBy: String
+  ): ReservationNodeConnection
+  images(
+    """
+    Maximum page size: 10
+    """
+    first: Int
+
+    """
+    Maximum page size: 10
+    """
+    last: Int
+    before: String
+    after: String
+    id: ID
+
+    """
+    Sort options: pk, -pk. Combine multiple options. Example: orderBy: "-FIELD_A,FIELD_B"
+    """
+    orderBy: String
+  ): VehicleImageNodeConnection
+  type: VehicleTypeEnum!
+  purposes: [ReservationPurposeEnum]!
+  capabilities: [VehicleCapabilitiesEnum]!
+  options: VehicleOptions!
+  operatingScheme: OperatingSchemeEnum!
+  data: VehicleData!
+  distanceToPosition: Distance
+
+  """
+  Availability info for the vehicle. Only available when availability is provided as argument.
+  """
+  availability: Availability
+
+  """
+  Availability info for the vehicle for the current time slot.
+  """
+  instantAvailability: InstantAvailability!
+
+  """
+  Number of times the vehicle was recently booked by the active user.
+  """
+  usage: Int
+}
+
+type VehicleNodeConnection {
+  """
+  Pagination data for this connection.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Contains the nodes in this connection.
+  """
+  edges: [VehicleNodeEdge]!
+}
+
+"""
+A Relay edge containing a `VehicleNode` and its cursor.
+"""
+type VehicleNodeEdge {
+  """
+  The item at the end of the edge
+  """
+  node: VehicleNode
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+"""
+Options that are custom per vehicle and are managed
+via central registry.
+"""
+type VehicleOptions {
+  defaultLiftOffer: Boolean!
+  costCalculator: Boolean!
+}
+
+enum VehicleTypeEnum {
+  COMBUSTION
+  ELECTRIC
+  HYBRID
+  PLUG_IN_HYBRID
+}
+
+input VerifyInput {
+  token: String!
+  clientMutationId: String
+}
+
+type VerifyPayload {
+  payload: GenericScalar
+  clientMutationId: String
+}
+
+"""
+Zone
+"""
+type ZoneNode implements Node {
+  """
+  The ID of the object.
+  """
+  id: ID!
+
+  """
+  City for which zone is defined.
+  """
+  city: String!
+  label: String!
+
+  """
+  Additional info about the zone.
+  """
+  description: String!
+
+  """
+  Will be displayed in pop up.
+  """
+  content: String!
+
+  """
+  Farbe die für die Anzeig der Zone verwendet wird.
+  """
+  color: String!
+
+  """
+  Primary key of object. Hint: in general it’s recommended to use the Relay ID!
+  """
+  pk: Int!
+
+  """
+  Zone in GeoJSON format including all zone data as properties.
+  """
+  jsonData: JSONString
+}

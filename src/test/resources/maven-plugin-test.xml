@@ -1,0 +1,15 @@
+<project>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>services.videa</groupId>
+                <artifactId>graphql-java-maven-plugin</artifactId>
+                <configuration>
+                    <outputFolder>src/test/generated</outputFolder>
+                    <schemaFile>graphql-java-test.gql</schemaFile>
+                    <packageName>services.videa.graphql.java.generated</packageName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
