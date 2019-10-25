@@ -18,11 +18,10 @@
 
 package services.videa.graphql.java.maven;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 
 import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Arrays;
 
 
@@ -35,22 +34,10 @@ public class GraphQLJavaMojoTest extends AbstractMojoTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        GraphQLJavaMojo mojo = lookupGraphQLJavaMojo();
-        File outputDirectory = new File(mojo.getOutputFolder());
-        if(!outputDirectory.exists()) {
-            boolean mkdir = outputDirectory.mkdir();
-            assertTrue(mkdir);
-        }
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        GraphQLJavaMojo mojo = lookupGraphQLJavaMojo();
-        File outputDirectory = new File(mojo.getOutputFolder());
-        if(outputDirectory.exists()) {
-            boolean delete = outputDirectory.delete();
-            assertTrue(delete);
-        }
     }
 
     private GraphQLJavaMojo lookupGraphQLJavaMojo() throws Exception {
@@ -63,7 +50,7 @@ public class GraphQLJavaMojoTest extends AbstractMojoTestCase {
         GraphQLJavaMojo mojo = lookupGraphQLJavaMojo();
         String filePath = "src/test/resources/" + mojo.getSchemaFile();
         File file = new File(filePath);
-        assertTrue("Schema '"+ mojo.getSchemaFile()+"' file missing", file.exists());
+        assertTrue("Schema '" + mojo.getSchemaFile() + "' file missing", file.exists());
     }
 
     public void testMojoLookup() throws Exception {
@@ -90,6 +77,12 @@ public class GraphQLJavaMojoTest extends AbstractMojoTestCase {
 
     public void testGeneration() throws Exception {
         GraphQLJavaMojo mojo = lookupGraphQLJavaMojo();
+
+        String outputFolder = mojo.getOutputFolder();
+
+        File generationFolder = new File(outputFolder);
+        FileUtils.forceMkdir(generationFolder);
+
         mojo.execute();
 
         String filePath = mojo.getOutputFolder() + "/" + mojo.getPackageName().replace(".", "/");
@@ -98,7 +91,8 @@ public class GraphQLJavaMojoTest extends AbstractMojoTestCase {
         assertTrue(files.length > 0);
 
         Arrays.stream(files).forEach(File::delete);
-    }
 
+        FileUtils.forceDelete(generationFolder);
+    }
 
 }
